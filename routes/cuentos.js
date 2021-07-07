@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 const { validateFields, validateJWT } = require('../middlewares');
-const { existCuentoId } = require('../helpers');
+const { existCuentoId, existCuentoUrl } = require('../helpers');
 const { 
     getCuentos,
     getCuento,
@@ -18,9 +18,8 @@ const router = Router();
 router.get('/', getCuentos);
 
 //get one - public 
-router.get('/:id',[
-    check('id', 'the id is not valid').isMongoId(),
-    check('id').custom( existCuentoId ),
+router.get('/:url',[
+    check('url').custom( existCuentoUrl ),
     validateFields
 ], getCuento);
 
@@ -31,6 +30,8 @@ router.post('/',[
     check('title', 'the title has to be a string').isString(),
     check('url', 'the url is required').not().isEmpty(),
     check('url', 'the url has to be a string').isString(),
+    check('date', 'the date has to be a number').isNumeric(),
+    check('date', 'the date is required').not().isEmpty(),
     validateFields
 ], createCuento);
 

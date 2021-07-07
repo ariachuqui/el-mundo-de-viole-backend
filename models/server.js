@@ -14,7 +14,7 @@ class Server {
             cuentos: '/api/cuento',
             dibujos: '/api/dibujos',
             uploads: '/api/uploads',
-            users: '/api/user'
+            // users: '/api/user'
         };
 
         //Middlewares
@@ -49,7 +49,7 @@ class Server {
         this.app.use( this.paths.cuentos, require('../routes/cuentos') ); 
         this.app.use( this.paths.dibujos, require('../routes/dibujos') ); 
         this.app.use( this.paths.uploads, require('../routes/uploads') ); 
-        this.app.use( this.paths.users, require('../routes/users') ); 
+        // this.app.use( this.paths.users, require('../routes/users') ); 
     }
 
     listen() {

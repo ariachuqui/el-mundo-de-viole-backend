@@ -1,4 +1,5 @@
 const { response } = require("express");
+const Dibujo = require('../models/dibujo')
 const cloudinary = require('cloudinary').v2;
 cloudinary.config( process.env.CLOUDINARY_URL );
 
@@ -23,7 +24,7 @@ const uploadFiles = async(req, res=response) => {
         const { tempFilePath } = file;
         const { secure_url } = await cloudinary.uploader.upload( tempFilePath );
     
-        res.status(500).json({
+        res.status(200).json({
             imgUrl: secure_url,
             imgName
         })
@@ -103,22 +104,27 @@ const deleteImage = async(req, res = response) => {
 
     //Find Model
     const {model, status, msg } = await findModelById( collection, id )
+
     //If model === null, throw error
     if( !model ){
-        if(status === 500) 
-            return res.status(500).json({ msg: msg });
-
-        if(status === 400) 
-            return res.status(400).json({ msg: msg });
+        return res.status( status ).json({ msg });
     }
 
-    // Clean previous images
-    if(model.imgUrl) {
+    // If already has Img
+    if ( model.imgUrl ) {
         const nameArr = model.imgUrl.split('/');
         const name = nameArr[nameArr.length - 1];
         const [ public_id ] = name.split('.');
 
         await cloudinary.uploader.destroy( public_id );
+    }
+
+    // If it's Dibujo, we delete the whole model
+    if ( collection === 'dibujos' ) {
+        const deletedDibujo = await Dibujo.findByIdAndDelete( id );
+        return res.status(200).json({
+            deletedDibujo
+        });
     }
 
     model.imgUrl = null;

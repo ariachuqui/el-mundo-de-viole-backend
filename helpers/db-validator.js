@@ -8,6 +8,13 @@ const existCuentoId = async( id = '' ) => {
     }
 }
 
+const existCuentoUrl = async( url = '' ) => {
+    const existCuento = await Cuento.findOne( { url } );
+    if ( !existCuento ) {
+        throw new Error('this url does not exists');
+    }
+}
+
 const existDibujoId = async( id = '' ) => {
     const existDibujo = await Dibujo.findById( id );
     if ( !existDibujo ) {
@@ -26,5 +33,6 @@ const collectionsAllowed = ( collection = '', collections = [] ) => {
 module.exports = {
     existCuentoId,
     existDibujoId,
-    collectionsAllowed
+    collectionsAllowed,
+    existCuentoUrl
 }

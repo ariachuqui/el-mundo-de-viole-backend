@@ -3,11 +3,15 @@ const { Schema, model } = require("mongoose");
 const dibujoSchema = Schema({
     imgUrl: {
         type: String,
-        require: [true, 'the imgUrl is required']
+        required: [true, 'the imgUrl is required']
     },
     imgName: {
         type: String,
-        require: [true, 'the imgName is required']
+        required: [true, 'the imgName is required']
+    },
+    date: {
+        type: Number,
+        required: true
     }
 })
 

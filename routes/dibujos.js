@@ -2,8 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 const { validateFields, validateJWT } = require('../middlewares');
-const { existDibujoId } = require('../helpers');
-const { getDibujos, createDibujo, deleteDibujo } = require('../controllers/dibujos');
+const { getDibujos, createDibujo } = require('../controllers/dibujos');
 
 const router = Router();
 
@@ -18,16 +17,11 @@ router.post('/',[
     check('imgUrl', 'the title has to be a string').isString(),
     check('imgName', 'the url is required').not().isEmpty(),
     check('imgName', 'the url has to be a string').isString(),
+    check('date', 'the date has to be a number').isNumeric(),
+    check('date', 'the date is required').not().isEmpty(),
     validateFields
 ], createDibujo);
 
-//delete - token
-router.delete('/:id',[
-    validateJWT,
-    check('id', 'the id is not valid').isMongoId(),
-    check('id').custom(existDibujoId),
-    validateFields
-], deleteDibujo);
 
 
 

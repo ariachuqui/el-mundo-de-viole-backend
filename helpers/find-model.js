@@ -1,4 +1,5 @@
 const Cuento = require("../models/cuento");
+const Dibujo = require("../models/dibujo");
 
 const findModelById = async( typeOfModel, id ) => {
     let model;
@@ -9,13 +10,12 @@ const findModelById = async( typeOfModel, id ) => {
             model = await Cuento.findById(id)
             break;
 
-        // case 'dibujos':
-        //     model = await Dibujo.findById(id)
-        //     break;
+        case 'dibujos':
+            model = await Dibujo.findById(id)
+            break;
     
         default:
             return {
-                model,
                 status: 500,
                 msg:'not validated'
             }
@@ -24,7 +24,6 @@ const findModelById = async( typeOfModel, id ) => {
     
     if(!model) {
         return {
-            model,
             status: 400,
             msg:'the id is not valid or is not validated'
         }

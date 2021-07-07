@@ -5,9 +5,10 @@ const Dibujo = require("../models/dibujo");
 
 //getDibujos all 
 const getDibujos = async(req, res = response) => {
-    const {limit = 5, skip = 0} = req.query;
+    const { limit = 5, skip = 0 } = req.query;
 
     const dibujos = await Dibujo.find()
+        .sort({date: -1})
         .limit( Number(limit) )
         .skip( Number(skip) )
    
@@ -42,20 +43,8 @@ const createDibujo = async(req, res = response) => {
     });
 }
 
-//deleteDibujo
-const deleteDibujo = async(req, res = response) => {
-    const { id } = req.params;
-
-    const dibujoDeleted = await Dibujo.findByIdAndDelete(id);
-
-    res.status(200).json({
-        msg: 'Dibujo deleted',
-        dibujoDeleted
-    });
-}
 
 module.exports = {
     getDibujos,
     createDibujo,
-    deleteDibujo,
 }

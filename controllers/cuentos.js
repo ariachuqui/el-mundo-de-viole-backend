@@ -5,11 +5,13 @@ const Cuento = require("../models/cuento");
 
 //get all - public
 const getCuentos = async(req, res = response) => {
-    const {limit = 5, skip = 0} = req.query;
+    const {limit = 5, skip = 0, search = ''} = req.query;
+    const query = {title: { "$regex": `${search}`, "$options": "i" }};
 
-    const cuentos = await Cuento.find()
-        .limit( Number(limit) )
-        .skip( Number(skip) )
+    const cuentos = await Cuento.find( query )
+        .sort( { date: -1 } )
+        .limit( Number( limit ) )
+        .skip( Number( skip ) )
    
     res.status(200).json({
         cuentos
@@ -18,9 +20,9 @@ const getCuentos = async(req, res = response) => {
 
 //get one - public 
 const getCuento = async(req, res = response) => {
-    const id = req.params.id;
+    const url = req.params.url;
 
-    const cuento = await Cuento.findById( id )
+    const cuento = await Cuento.findOne( { url } );
 
     res.status(200).json({
         cuento               
